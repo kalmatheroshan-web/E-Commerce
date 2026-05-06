@@ -16,7 +16,7 @@ const searchRouter = require('./Routes/searchRoute');
 const fileUpload = require('express-fileupload');
 
 // Mongodb Connection
-const connection = require('./config/mongodb');
+const connection = require('./Config/mongodb');
 const cloudinaryConnect = require('./Config/cloudinary');
 connection();
 
