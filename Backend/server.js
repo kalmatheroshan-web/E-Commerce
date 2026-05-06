@@ -9,7 +9,7 @@ const passport = require('passport');
 const session = require('express-session');
 require('dotenv').config();
 
-const errorHandler = require('./middlewares/Error');
+const errorHandler = require('./Middlewares/Error');
 const productRouter = require('./Routes/productRoute');
 const categoryRouter = require('./Routes/CategoryRoute');
 const searchRouter = require('./Routes/searchRoute');
