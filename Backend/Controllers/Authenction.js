@@ -96,35 +96,25 @@ async function signUp(req, res) {
 // login
 async function login(req, res) {
     const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({
-            mes: "Email and password are required"
-        });
-    }
-
     try {
-        // Check if user exists
+        // 1. Find user
         const user = await userModel.findOne({ email });
 
+        // Security Tip: Use generic messages to prevent email harvesting
         if (!user) {
-            return res.status(404).json({
-                mes: "User not found"
-            });
+            return res.status(401).json({ mes: "Invalid email or password" });
         }
 
-        // Check password first
+        // 2. Check password
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
         if (!isPasswordCorrect) {
-            return res.status(401).json({
-                mes: "Incorrect password"
-            });
+            return res.status(401).json({ mes: "Invalid email or password" });
         }
 
-        //sendOtp
-        // 6 random digit otp
+        // 3. Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000);
 
+<<<<<<< HEAD
         // send otp to email
         const otp = await otpModel.findOneAndUpdate(
             { email },
@@ -142,18 +132,35 @@ async function login(req, res) {
         );
 
         // Send response
+=======
+        // 4. Upsert OTP (Update if exists, Create if not)
+        // This prevents multiple active OTPs for one email
+        await otpModel.findOneAndUpdate(
+            { email }, 
+            { otp, createdAt: new Date() }, 
+            { upsert: true, new: true }
+        );
+
+        // 5. Send OTP via Email Service (Nodemailer, SendGrid, etc.)
+        // await sendEmail(email, otp); 
+
+        console.log(`OTP for ${email}: ${otp}`);
+
+>>>>>>> 52900c5d15e78a5748196afb7d87f5afe387e7e1
         return res.status(200).json({
             mes: "OTP sent to your email",
             email: user.email
         });
 
     } catch (err) {
-        console.log(err.message);
+        console.error(err.message);
         return res.status(500).json({
-            mes: err.message
+            mes: "Internal Server Error" // Don't send raw error messages to users
         });
     }
 }
+
+
 
 //change password
 async function changePassword(req, res) {
