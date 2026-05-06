@@ -139,6 +139,7 @@ async function login(req, res) {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({
+            error : err.message,
             mes: "Internal Server Error" // Don't send raw error messages to users
         });
     }
