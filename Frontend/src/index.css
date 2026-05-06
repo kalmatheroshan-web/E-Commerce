@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@media print {
+    body {
+        background: white;
+    }
+
+    .print\:hidden {
+        display: none !important;
+    }
+
+    .invoice-root {
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none !important;
+        border: none !important;
+    }
+}
+
+
+
+.swiper {
+    padding-bottom: 25px !important;
+}
+
+.swiper .swiper-pagination-bullet {
+    width: 7px;
+    height: 7px;
+    background: #dbdbdb;
+    opacity: 1;
+    margin: 0 4px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Active Bullet (The Flipkart Blue Pill) */
+.swiper .swiper-pagination-bullet-active {
+    width: 20px;
+    border-radius: 10px;
+    background: #2874f0;
+}
+
+/* Optional: Hover effect for better UX on desktop */
+.swiper .swiper-pagination-bullet:hover {
+    background: #2874f0;
+    opacity: 0.7;
+}
