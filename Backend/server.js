@@ -32,7 +32,7 @@ app.use(fileUpload({
 
 
 // Google Auth
-require('./config/googleAuth');
+require('./Config/googleAuth');
 
 
 // Middleware
