@@ -116,7 +116,7 @@ async function login(req, res) {
 
 
         // 4. send otp to email
-        const otp = await otpModel.findOneAndUpdate(
+        await otpModel.findOneAndUpdate(
             { email },
             { otp, createdAt: new Date() },
             { upsert: true, new: true }
