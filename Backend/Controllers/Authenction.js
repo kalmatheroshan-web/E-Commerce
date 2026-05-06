@@ -94,6 +94,11 @@ async function signUp(req, res) {
 // login
 async function login(req, res) {
     const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({
+            mes: "Email and password are required"
+        });
+    }
 
     try {
         // Check if user exists
