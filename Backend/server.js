@@ -44,7 +44,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(cors({
-    origin: ["https://effervescent-queijadas-ed1bf5.netlify.app"],
+    origin: ["https://effervescent-queijadas-ed1bf5.netlify.app", "https://effervescent-queijadas-ed1bf5.netlify.app/"],
     credentials: true
 }));
 
