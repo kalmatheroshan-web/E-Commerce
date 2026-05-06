@@ -44,7 +44,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(cors({
-    origin: ["https://e-commerce-p0de.onrender.com/"],
+    origin: ["https://stately-liger-fc94ff.netlify.app/"],
     credentials: true
 }));
 
