@@ -115,39 +115,23 @@ async function login(req, res) {
         // 3. Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000);
 
-<<<<<<< HEAD
-        // send otp to email
-        const otp = await otpModel.findOneAndUpdate(
+
+        // 4. send otp to email
+        await otpModel.findOneAndUpdate(
             { email },
             { otp, createdAt: new Date() },
             { upsert: true, new: true }
         );
 
-        console.log("OTP : ", otp);
-
-        await sendMail(
+         await sendMail(
             this.email,
             "OTP Verification !!",
             `Your OTP is ${this.otp}`,
             otp_html(this.otp)
         );
 
-        // Send response
-=======
-        // 4. Upsert OTP (Update if exists, Create if not)
-        // This prevents multiple active OTPs for one email
-        await otpModel.findOneAndUpdate(
-            { email }, 
-            { otp, createdAt: new Date() }, 
-            { upsert: true, new: true }
-        );
-
-        // 5. Send OTP via Email Service (Nodemailer, SendGrid, etc.)
-        // await sendEmail(email, otp); 
-
         console.log(`OTP for ${email}: ${otp}`);
 
->>>>>>> 52900c5d15e78a5748196afb7d87f5afe387e7e1
         return res.status(200).json({
             mes: "OTP sent to your email",
             email: user.email
@@ -156,6 +140,7 @@ async function login(req, res) {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({
+            error : err.message,
             mes: "Internal Server Error" // Don't send raw error messages to users
         });
     }
