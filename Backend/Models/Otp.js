@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const sendMail = require('../Services/sendmail');
-const otp_html = require('../Config/mailsHtml/otp_html.js');
+
 
 const otp_schema = new mongoose.Schema({
     email: {
@@ -18,18 +18,6 @@ const otp_schema = new mongoose.Schema({
     }
 });
 
-otp_schema.pre("save", async function () {
-    if (!this.email || !this.otp) {
-        throw new Error("Email and OTP are required");
-    }
-
-    await sendMail(
-        this.email,
-        "OTP Verification !!",
-        `Your OTP is ${this.otp}`,
-        otp_html(this.otp)
-    );
-});
 
 const otpModel = mongoose.model('OTP', otp_schema);
 

@@ -2,6 +2,8 @@ const otpModel = require("../Models/Otp");
 const userModel = require("../Models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const otp_html = require('../Config/mailsHtml/otp_html.js');
+
 require('dotenv').config();
 
 async function sendOtp(req, res) {
@@ -40,7 +42,7 @@ async function verify_otp(req, res) {
     // Set cookie
     res.cookie("token", token, {
         httpOnly: true,
-        secure: false, // true in production (https)
+        secure: false,
     });
 
     return res.status(200).json({
@@ -124,8 +126,20 @@ async function login(req, res) {
         const otp = Math.floor(100000 + Math.random() * 900000);
 
         // send otp to email
-        await otpModel.create({ email, otp });
+        const otp = await otpModel.findOneAndUpdate(
+            { email },
+            { otp, createdAt: new Date() },
+            { upsert: true, new: true }
+        );
+
         console.log("OTP : ", otp);
+
+        await sendMail(
+            this.email,
+            "OTP Verification !!",
+            `Your OTP is ${this.otp}`,
+            otp_html(this.otp)
+        );
 
         // Send response
         return res.status(200).json({
