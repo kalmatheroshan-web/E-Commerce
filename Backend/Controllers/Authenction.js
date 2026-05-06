@@ -123,13 +123,13 @@ async function login(req, res) {
         );
 
         // 5. Send Email
-        // FIXED: Changed 'this.otp' to 'otp'
         await sendMail(
             email,
             "OTP Verification !!",
             `Your OTP is ${otp}`,
             otp_html(otp)
         );
+
 
         console.log(`OTP for ${email}: ${otp}`);
 
