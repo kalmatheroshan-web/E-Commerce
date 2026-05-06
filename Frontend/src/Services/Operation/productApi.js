@@ -192,7 +192,6 @@ export async function getAllProducts() {
     }
     catch (error) {
         console.log(error.message);
-        toast.error(error.message);
     }
 }
 
