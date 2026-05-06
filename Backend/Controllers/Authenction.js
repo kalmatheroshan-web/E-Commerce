@@ -101,7 +101,7 @@ async function login(req, res) {
         // 1. Find user
         const user = await userModel.findOne({ email });
 
-        // Security Tip: Use generic messages to prevent email harvesting
+        // Generic error message for security
         if (!user) {
             return res.status(401).json({ mes: "Invalid email or password" });
         }
@@ -115,19 +115,20 @@ async function login(req, res) {
         // 3. Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000);
 
-
-        // 4. send otp to email
+        // 4. Update or Create OTP record
         await otpModel.findOneAndUpdate(
             { email },
             { otp, createdAt: new Date() },
             { upsert: true, new: true }
         );
 
-         await sendMail(
-            this.email,
+        // 5. Send Email
+        // FIXED: Changed 'this.otp' to 'otp'
+        await sendMail(
+            email,
             "OTP Verification !!",
-            `Your OTP is ${this.otp}`,
-            otp_html(this.otp)
+            `Your OTP is ${otp}`,
+            otp_html(otp)
         );
 
         console.log(`OTP for ${email}: ${otp}`);
@@ -138,14 +139,12 @@ async function login(req, res) {
         });
 
     } catch (err) {
-        console.error(err.message);
+        console.error("Login Error:", err.message);
         return res.status(500).json({
-            error : err.message,
-            mes: "Internal Server Error" // Don't send raw error messages to users
+            mes: "Internal Server Error"
         });
     }
 }
-
 
 
 //change password
