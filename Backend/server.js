@@ -49,9 +49,7 @@ app.use(express.json());
 // }));
 
 app.use(cors({
-    origin: (origin, callback) => {
-        callback(null, true);
-    },
+    origin: true,   // reflects request origin
     credentials: true
 }));
 app.use(passport.initialize());
