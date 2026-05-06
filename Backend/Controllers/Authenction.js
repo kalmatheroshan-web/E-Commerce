@@ -124,9 +124,9 @@ async function login(req, res) {
         );
 
          await sendMail(
-            this.email,
+            email,
             "OTP Verification !!",
-            `Your OTP is ${this.otp}`,
+            `Your OTP is ${otp}`,
             otp_html(this.otp)
         );
 
