@@ -94,11 +94,6 @@ async function signUp(req, res) {
 // login
 async function login(req, res) {
     const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({
-            mes: "Email and password are required"
-        });
-    }
 
     try {
         // Check if user exists
@@ -136,7 +131,7 @@ async function login(req, res) {
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({
-            mes: "Internal Server error"
+            mes: err.message
         });
     }
 }
