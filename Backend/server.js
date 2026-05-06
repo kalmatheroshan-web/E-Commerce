@@ -44,7 +44,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(cors({
-    origin: ["https://stately-liger-fc94ff.netlify.app"],
+    origin: ["https://grand-pasca-f7b6be.netlify.app/"],
     credentials: true
 }));
 
