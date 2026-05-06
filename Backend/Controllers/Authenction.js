@@ -3,6 +3,7 @@ const userModel = require("../Models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const otp_html = require('../Config/mailsHtml/otp_html.js');
+const sendMail = require('../Services/sendmail');
 
 require('dotenv').config();
 
