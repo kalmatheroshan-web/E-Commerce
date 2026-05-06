@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const sendMail = require('../services/sendmail');
+const sendMail = require('../Services/sendmail');
 const otp_html = require('../config/mails html/otp_html');
 
 const otp_schema = new mongoose.Schema({
