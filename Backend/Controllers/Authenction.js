@@ -94,7 +94,8 @@ async function signUp(req, res) {
 // login
 async function login(req, res) {
     const { email, password } = req.body;
-
+    console.log(req.body);
+    res.status(200).send(req.body);
     try {
         // Check if user exists
         const user = await userModel.findOne({ email });
