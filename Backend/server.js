@@ -43,11 +43,17 @@ app.use(session({
 }));
 
 app.use(express.json());
+// app.use(cors({
+//     origin: ["*"],
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: ["https://grand-pasca-f7b6be.netlify.app/"],
+    origin: (origin, callback) => {
+        callback(null, true);
+    },
     credentials: true
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
@@ -56,7 +62,7 @@ app.use(cookieParser());
 app.use('/api/auth', userRoute);
 app.use('/api/product', productRouter);
 app.use('/api/category', categoryRouter);
-app.use('/api/search' , searchRouter);
+app.use('/api/search', searchRouter);
 
 app.get('/ping', (req, res) => {
     res.send('pong')
