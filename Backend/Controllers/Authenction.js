@@ -130,9 +130,6 @@ async function login(req, res) {
             otp_html(otp)
         );
 
-
-        console.log(`OTP for ${email}: ${otp}`);
-
         return res.status(200).json({
             mes: "OTP sent to your email",
             email: user.email
