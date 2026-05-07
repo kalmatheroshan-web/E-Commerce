@@ -10,16 +10,20 @@ let transporter = nodemailer.createTransport({
 });
 
 async function sendMail(email, subject, text, html) {
-
-    let info = await transporter.sendMail({
-        from: '"Fikri Shop" <fikrishopy@gmail.com>',
-        to: email,
-        subject: subject,
-        text: text,
-        html: html
-    });
-
-    // console.log("Message sent:", info.messageId);
+    try {
+        let info = await transporter.sendMail({
+            from: '"Fikri Shop" <fikrishopy@gmail.com>',
+            to: email,
+            subject: subject,
+            text: text,
+            html: html
+        });
+        console.log("Message sent: %s", info.messageId);
+        return info;
+    } catch (error) {
+        console.error("Error sending email: ", error);
+        throw error;
+    }
 }
 
 module.exports = sendMail;
