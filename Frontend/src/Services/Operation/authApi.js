@@ -140,12 +140,11 @@ export function signUp(navigate, email, password, firstName, lastName, accountTy
             const response = await fetchData(SIGNUP_API, 'POST', obj);
 
 
-            console.log(response);
             if (response) {
                 await dispatch(setSignupData(response.user));
                 localStorage.setItem('user', JSON.stringify(response.user))
                 navigate('/');
-            }
+             }
 
         } catch (error) {
 

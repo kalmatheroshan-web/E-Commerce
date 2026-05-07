@@ -122,6 +122,10 @@ async function login(req, res) {
             { upsert: true, new: true }
         );
 
+        
+        console.log(process.env.GMAIL_USER);
+        console.log(process.env.GMAIL_PASSWORD);
+
         // 5. Send Email
         await sendMail(
             email,
