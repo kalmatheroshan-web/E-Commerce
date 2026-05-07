@@ -5,13 +5,14 @@ const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
+        pass: process.env.GMAIL_PASSWORD,
     },
 });
 
+
 async function sendMail(email, subject, text = "", html = "") {
     try {
-
+ 
         // Verify SMTP connection
         await transporter.verify();
         console.log("SMTP server is ready");
