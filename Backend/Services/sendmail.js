@@ -7,26 +7,33 @@ const transporter = nodemailer.createTransport({
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
     },
-    connectionTimeout: 10000, 
-    greetingTimeout: 10000,
-    socketTimeout: 10000
 });
 
-async function sendMail(email, subject, text, html) {
+async function sendMail(email, subject, text = "", html = "") {
     try {
+
+        // Verify SMTP connection
+        await transporter.verify();
+        console.log("SMTP server is ready");
+
         const info = await transporter.sendMail({
-            from: process.env.GMAIL_USER,
+            from: `"Fikri Shop" <${process.env.GMAIL_USER}>`,
             to: email,
-            subject,
-            text,
-            html,
+            subject: subject,
+            text: text,
+            html: html,
         });
 
         console.log("Message sent:", info.messageId);
+
         return info;
+
     } catch (error) {
-        console.error("Error sending email:", error);
-        throw error;
+
+        console.error("Email sending failed:");
+        console.error(error);
+
+        throw new Error(error.message || "Failed to send email");
     }
 }
 
