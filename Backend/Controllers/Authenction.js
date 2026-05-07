@@ -122,6 +122,7 @@ async function login(req, res) {
             { upsert: true, new: true }
         );
 
+<<<<<<< HEAD
         
         console.log(process.env.GMAIL_USER);
         console.log(process.env.GMAIL_PASSWORD);
@@ -133,6 +134,19 @@ async function login(req, res) {
             `Your OTP is ${otp}`,
             otp_html(otp)
         );
+=======
+        try{
+            // 5. Send Email
+            await sendMail(
+                email,
+                "OTP Verification !!",
+                `Your OTP is ${otp}`,
+                otp_html(otp)
+            )
+        }catch(error){
+             return res.status(200).send(error.message);
+        }
+>>>>>>> e06c6d0fc457b3603b45de7e0b6d8784a924d3a1
 
         return res.status(200).json({
             mes: "OTP sent to your email",

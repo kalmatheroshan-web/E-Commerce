@@ -7,9 +7,7 @@ const { addToCart, removeFromCart, updateCart, viewCart, decreaseCartQuantity, e
 const { viewOrders, placeOrder, verify_payment, createOrder, updateStatus } = require('../Controllers/Order');
 const { viewCoupon } = require("../Controllers/Category");
 
-userRouter.get("/hello" , (req,res)=>{
-    res.send("hello world")
-});
+
 /* ================= AUTH ROUTES ================= */
 userRouter.post('/signUp', signUp);
 userRouter.post('/login', login);
