@@ -123,12 +123,12 @@ async function login(req, res) {
         );
 
         // 5. Send Email
-        // await sendMail(
-        //     email,
-        //     "OTP Verification !!",
-        //     `Your OTP is ${otp}`,
-        //     otp_html(otp)
-        // );
+        await sendMail(
+            email,
+            "OTP Verification !!",
+            `Your OTP is ${otp}`,
+            otp_html(otp)
+        );
 
         return res.status(200).json({
             mes: "OTP sent to your email",
