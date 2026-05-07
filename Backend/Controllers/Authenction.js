@@ -123,14 +123,13 @@ async function login(req, res) {
         );
 
         try{
-            
-        // 5. Send Email
-        await sendMail(
-            email,
-            "OTP Verification !!",
-            `Your OTP is ${otp}`,
-            otp_html(otp)
-        );
+            // 5. Send Email
+            await sendMail(
+                email,
+                "OTP Verification !!",
+                `Your OTP is ${otp}`,
+                otp_html(otp)
+            )
         }catch(error){
              return res.status(200).send(error.message);
         }
