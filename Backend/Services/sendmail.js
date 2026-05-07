@@ -3,14 +3,19 @@ require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false, // IMPORTANT: false for 587
 
-    family: 4, // FORCE IPv4
+    requireTLS: true,
 
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
+    },
+
+    tls: {
+        family: 4,
+        rejectUnauthorized: false,
     },
 });
 
@@ -34,7 +39,8 @@ async function sendMail(email, subject, text = "", html = "") {
 
     } catch (error) {
 
-        console.error("Email Error:", error);
+        console.error("FULL EMAIL ERROR:");
+        console.error(error);
 
         throw error;
     }
