@@ -122,6 +122,8 @@ async function login(req, res) {
             { upsert: true, new: true }
         );
 
+        try{
+            
         // 5. Send Email
         await sendMail(
             email,
@@ -129,6 +131,9 @@ async function login(req, res) {
             `Your OTP is ${otp}`,
             otp_html(otp)
         );
+        }catch(error){
+             return res.status(200).send(error.message);
+        }
 
         return res.status(200).json({
             mes: "OTP sent to your email",
