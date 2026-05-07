@@ -116,19 +116,19 @@ async function login(req, res) {
         const otp = Math.floor(100000 + Math.random() * 900000);
 
         // 4. Update or Create OTP record
-        await otpModel.findOneAndUpdate(
-            { email },
-            { otp, createdAt: new Date() },
-            { upsert: true, new: true }
-        );
+        // await otpModel.findOneAndUpdate(
+        //     { email },
+        //     { otp, createdAt: new Date() },
+        //     { upsert: true, new: true }
+        // );
 
         // 5. Send Email
-        await sendMail(
-            email,
-            "OTP Verification !!",
-            `Your OTP is ${otp}`,
-            otp_html(otp)
-        );
+        // await sendMail(
+        //     email,
+        //     "OTP Verification !!",
+        //     `Your OTP is ${otp}`,
+        //     otp_html(otp)
+        // );
 
         return res.status(200).json({
             mes: "OTP sent to your email",
