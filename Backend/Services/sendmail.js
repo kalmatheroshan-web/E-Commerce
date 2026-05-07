@@ -10,7 +10,10 @@ let transporter = nodemailer.createTransport({
     auth: {
         user: "fikrishopy@gmail.com",
         pass: process.env.GMAIL_PASSWORD 
-    }
+    },
+    connectionTimeout: 10000, 
+    greetingTimeout: 10000,
+    socketTimeout: 10000
 });
 
 async function sendMail(email, subject, text, html) {
