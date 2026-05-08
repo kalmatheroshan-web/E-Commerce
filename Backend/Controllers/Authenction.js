@@ -108,7 +108,7 @@ async function login(req, res) {
 
         // 2. Check password
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        return res.send({isPasswordCorrect});
+     
         if (!isPasswordCorrect) {
             return res.status(401).json({ mes: "Invalid email or password" });
         }
