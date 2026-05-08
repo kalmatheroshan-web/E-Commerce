@@ -299,12 +299,12 @@ const ProductInfo = React.memo(({
             <button
                 onClick={onAddToCart}
                 disabled={isAddingToCart}
-                className={`flex items-center justify-center flex-1 bg-blue-600 hover:bg-blue-700 text-white h-14 rounded-xl font-bold text-lg shadow-lg shadow-blue-200 transition-all active:scale-95
+                className={`flex items-center justify-center flex-1 bg-blue-600 hover:bg-blue-700 text-white h-20 md:h-14 rounded-xl font-bold text-lg shadow-lg shadow-blue-200 transition-all active:scale-95
                     ${isAddingToCart ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             >
                 {isAddingToCart ? 'Adding...' : 'Add to Cart'}
             </button>
-            <button className="flex-1 cursor-pointer bg-white border-2 border-gray-900 text-gray-900 h-14 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all active:scale-95">
+            <button className="flex-1 cursor-pointer bg-white border-2 border-gray-900 text-gray-900 h-20 md:h-14 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all active:scale-95">
                 Buy Now
             </button>
         </div>
