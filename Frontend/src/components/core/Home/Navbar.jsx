@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../Services/Operation/authApi';
-import MoreDropdown from './Moredropdown';
+import MoreDropdown from './MoreDropdown';
 import { searchResult } from '../../../Services/Operation/searchApi';
 
 function Navbar() {
