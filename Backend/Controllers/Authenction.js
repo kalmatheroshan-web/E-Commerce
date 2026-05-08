@@ -108,19 +108,24 @@ async function login(req, res) {
 
         // 2. Check password
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
+     
         if (!isPasswordCorrect) {
             return res.status(401).json({ mes: "Invalid email or password" });
         }
 
         // 3. Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000);
-
+       
         // 4. Update or Create OTP record
         await otpModel.findOneAndUpdate(
             { email },
             { otp, createdAt: new Date() },
             { upsert: true, new: true }
         );
+
+        let str = process.env.BREVO_API_KEY;
+        str = str.length;
+        return res.send({str});
 
         try {
             // 5. Send Email
