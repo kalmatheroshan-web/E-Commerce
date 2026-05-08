@@ -23,7 +23,7 @@ function Profile() {
     { icon: <Settings size={18} />, label: "Account Settings" },
   ];
   return (
-    <div className="min-h-screen pt-20 pb-16 px-4 bg-slate-50">
+    <div className="min-h-screen pt-2 pb-16 px-4 bg-slate-50">
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
 
         {/* Sidebar */}
