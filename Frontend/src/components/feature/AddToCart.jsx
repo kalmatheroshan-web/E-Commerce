@@ -131,7 +131,7 @@ export default function AddToCart() {
     console.log(data);
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] pt-20 pb-20 px-4">
+        <div className="min-h-screen bg-[#F8FAFC] px-4">
             <div className="max-w-6xl mx-auto">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">

@@ -29,7 +29,7 @@ function Product() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#FBFCFE] pt-18 pb-20 px-4 md:px-12 lg:px-20">
+        <div className="min-h-screen bg-[#FBFCFE] pt-10 pb-20 px-4 md:px-12 lg:px-20">
 
             {/* Main Collection Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">

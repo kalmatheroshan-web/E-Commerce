@@ -16,7 +16,7 @@ const banners = [
 export default function Slider() {
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto pt-16 px-6">
+    <div className="w-full max-w-[1600px] mx-auto pt-6 px-6">
 
       <div className="overflow-hidden">
         <Swiper
@@ -63,11 +63,11 @@ export default function Slider() {
         >
           {banners.map((banner) => (
             <SwiperSlide key={banner.id}>
-              <div className="overflow-hidden shadow-sm p-2">
+              <div className="group overflow-hidden rounded-2xl bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl">
                 <img
                   src={banner.image}
                   alt="banner"
-                  className="md:w-[550px] rounded-2xl h-[180px] sm:h-[250px] md:h-[220px]  lg:h-[320px] object-cover"
+                  className="w-full h-[180px] sm:h-[250px] md:h-[220px] lg:h-[320px] rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
             </SwiperSlide>

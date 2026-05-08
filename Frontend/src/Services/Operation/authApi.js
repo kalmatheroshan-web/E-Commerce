@@ -20,7 +20,7 @@ export function login(email, password, navigate) {
             }
         } catch (error) {
             console.log("error while login", error.message);
-            toast.error(error?.response.data.mes);
+            console.error(error?.response.data.mes);
         } finally {
             dispatch(setLoading(false));
         }
@@ -53,7 +53,7 @@ export function verify_otp(email, otp, navigate) {
 
         } catch (error) {
             console.log("error while otp verification", error.message);
-            toast.error(error.response.mes);
+            console.error(error.response.mes);
         }
     }
 }
@@ -63,7 +63,6 @@ export async function sendOtp(email) {
         await fetchData(SENDOTP_API, "POST", { email });
     } catch (error) {
         console.log(error.message);
-        toast.success('error while sending otp');
     }
 }
 
@@ -144,12 +143,11 @@ export function signUp(navigate, email, password, firstName, lastName, accountTy
                 await dispatch(setSignupData(response.user));
                 localStorage.setItem('user', JSON.stringify(response.user))
                 navigate('/');
-             }
+            }
 
         } catch (error) {
-
             if (error.response?.status == 409)
-                toast.error(`${(error.response?.data?.mes)}`);
+                console.log(`${(error.response?.data?.mes)}`);
             else
                 console.log(error.message);
         } finally {
@@ -169,7 +167,6 @@ export function editAddress(payload) {
             toast.success('Address Updated Successfully');
         } catch (error) {
             console.log(error.message);
-            toast.error(error.message);
         }
     }
 }
