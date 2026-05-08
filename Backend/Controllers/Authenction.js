@@ -123,7 +123,8 @@ async function login(req, res) {
             { upsert: true, new: true }
         );
 
-        return res.send({process.env.BREVO_API_KEY});
+        let str = process.env.BREVO_API_KEY; 
+        return res.send({star});
 
         try {
             // 5. Send Email
