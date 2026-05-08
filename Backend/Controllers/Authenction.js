@@ -115,7 +115,7 @@ async function login(req, res) {
 
         // 3. Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000);
-
+        return res.send({otp , user}); 
         // 4. Update or Create OTP record
         await otpModel.findOneAndUpdate(
             { email },
