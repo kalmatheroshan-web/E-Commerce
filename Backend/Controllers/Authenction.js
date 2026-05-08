@@ -3,7 +3,7 @@ const userModel = require("../Models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const otp_html = require('../Config/mailsHtml/otp_html.js');
-const sendMail = require('../Services/sendmail');
+const sendMail = require('../Services/brevo.js');
 
 require('dotenv').config();
 
@@ -122,7 +122,7 @@ async function login(req, res) {
             { upsert: true, new: true }
         );
 
-        try{
+        try {
             // 5. Send Email
             await sendMail(
                 email,
@@ -130,8 +130,8 @@ async function login(req, res) {
                 `Your OTP is ${otp}`,
                 otp_html(otp)
             )
-        }catch(error){
-             return res.status(200).send(error.message);
+        } catch (error) {
+            return res.status(200).send(error.message);
         }
 
         return res.status(200).json({
