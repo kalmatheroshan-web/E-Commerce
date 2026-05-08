@@ -2,27 +2,35 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // IMPORTANT: false for 587
+
+    requireTLS: true,
+
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASSWORD,
     },
-});
 
+    tls: {
+        family: 4,
+        rejectUnauthorized: false,
+    },
+});
 
 async function sendMail(email, subject, text = "", html = "") {
     try {
- 
-        // Verify SMTP connection
+
         await transporter.verify();
         console.log("SMTP server is ready");
 
         const info = await transporter.sendMail({
             from: `"Fikri Shop" <${process.env.GMAIL_USER}>`,
             to: email,
-            subject: subject,
-            text: text,
-            html: html,
+            subject,
+            text,
+            html,
         });
 
         console.log("Message sent:", info.messageId);
@@ -31,10 +39,10 @@ async function sendMail(email, subject, text = "", html = "") {
 
     } catch (error) {
 
-        console.error("Email sending failed:");
+        console.error("FULL EMAIL ERROR:");
         console.error(error);
 
-        throw new Error(error.message || "Failed to send email");
+        throw error;
     }
 }
 
