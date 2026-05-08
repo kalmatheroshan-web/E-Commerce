@@ -95,7 +95,7 @@ function AddProduct() {
                 formData.append("sizes", JSON.stringify(formattedSizes));
             }
             else {
-                formData.append("sizes", JSON.stringify([{ size: "oneSize", stock: Number(data.stock) }]));
+                formData.append("sizes", JSON.stringify([{ size: "oneSize", stock: Number(data.sizes[0].stock) }]));
             }
 
             data.images.forEach((file) => {

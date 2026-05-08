@@ -11,7 +11,6 @@ export function createProduct(payload) {
         try {
             dispatch(setLoading(true));
             const response = await fetchData(CREATE_API, 'POST', payload);
-            toast.success('inserted successfully');
             return response;
         } catch (error) {
             console.log(error.message);
