@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Package, Upload, Plus, Trash2, DollarSign, Tag } from "lucide-react";
-import { toast } from "sonner";
+import toast from 'react-hot-toast';
 import { useForm, useFieldArray } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { viewCategory } from "../../../Services/Operation/categoryApi";

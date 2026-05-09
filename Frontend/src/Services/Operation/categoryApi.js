@@ -1,4 +1,4 @@
-import { toast } from "sonner";
+import toast from 'react-hot-toast';
 import fetchData from "../../hooks/fetchData";
 import { category } from "../api";
 const { READ_API, CREATE_CAT_API, VIEW_COUPONS_API, DELETE_CAT_API, CREATE_COUPONS_API, DELETE_COUPONS_API } = category;

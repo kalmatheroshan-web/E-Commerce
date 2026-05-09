@@ -1,5 +1,5 @@
-import { toast } from "sonner";
 import fetchData from "../../hooks/fetchData";
+import toast from 'react-hot-toast';
 import { auth } from '../api';
 
 const { UPDATE_STATUS_API } = auth;

@@ -1,6 +1,6 @@
 import fetchData from "../../hooks/fetchData";
-import { toast } from "sonner";
 import { product, auth } from "../api";
+import toast from 'react-hot-toast';
 import { setLoading, setSignupData, setToken } from "../../Redux/slices/authSlice";
 
 const { CREATE_API, GET_ALLPRODUCT_API, CREATE_REVIEW_API, GET_REVIEW_API } = product;

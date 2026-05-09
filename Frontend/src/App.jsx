@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { toast, Toaster } from 'sonner';
-
+import toast, { Toaster } from 'react-hot-toast';
 // Components
 import Navbar from './components/core/Home/Navbar';
 import ProductDetail from './components/feature/ProductDetail';
@@ -56,7 +55,21 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" richColors />
+      <Toaster
+        toastOptions={{
+          style: {
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))",
+            color: "#fff",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "16px",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+            padding: "14px 18px",
+          },
+        }}
+      />
       {
         !location.pathname.includes('/admin') && !location.pathname.includes('/seller') &&
         <Navbar />
@@ -105,7 +118,7 @@ function App() {
 
 
 
-          
+
           <Route path="/about-us" element={<AboutUs />} />
 
           {/* 404 Catch-all (Optional but recommended) */}

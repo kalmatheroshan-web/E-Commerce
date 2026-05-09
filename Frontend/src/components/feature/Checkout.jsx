@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
     Truck, ShieldCheck, ArrowRight,

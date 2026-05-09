@@ -1,7 +1,7 @@
 import { product } from "../api";
 import fetchData from "../../hooks/fetchData";
-import { toast } from "sonner";
 const { GET_ALL_SELLER_PRODUCT_API, GET_ALLORDERS } = product;
+import toast from 'react-hot-toast';
 
 export function getAllSellerProducts() {
     return async function () {

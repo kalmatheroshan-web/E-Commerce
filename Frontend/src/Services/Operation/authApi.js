@@ -1,5 +1,5 @@
 import fetchData from "../../hooks/fetchData";
-import { toast } from "sonner";
+import toast from 'react-hot-toast';
 import { setLoading, setSignupData, setToken, setRole } from "../../Redux/slices/authSlice";
 import { auth } from '../api';
 const { LOGIN_API, VERIFY_API, SENDOTP_API, SIGNUP_API, CHANGE_PASSWORD_API, EDIT_ADDRESS_API } = auth;
@@ -93,6 +93,7 @@ export function verify_forgetOtp(email, otp, navigate) {
             }
         } catch (error) {
             console.log(error.message);
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }
