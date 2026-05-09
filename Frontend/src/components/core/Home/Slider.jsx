@@ -63,7 +63,7 @@ export default function Slider() {
         >
           {banners.map((banner) => (
             <SwiperSlide key={banner.id}>
-              <div className="group overflow-hidden rounded-2xl bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl">
+              <div className="group overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl">
                 <img
                   src={banner.image}
                   alt="banner"

@@ -15,9 +15,10 @@ const categoryRouter = require('./Routes/CategoryRoute');
 const searchRouter = require('./Routes/searchRoute');
 const fileUpload = require('express-fileupload');
 
-// Mongodb Connection
 const connection = require('./Config/mongodb');
 const cloudinaryConnect = require('./Config/cloudinary');
+
+// Mongodb Connection
 connection();
 
 // Cloudinary Connection
@@ -28,8 +29,6 @@ app.use(fileUpload({
     useTempFiles: true,
     tempFileDir: '/tmp/'
 }));
-
-
 
 // Google Auth
 require('./Config/googleAuth');
@@ -51,7 +50,8 @@ app.use(express.json());
 app.use(cors({
     origin: true,   // reflects request origin
     credentials: true
-})); 
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
