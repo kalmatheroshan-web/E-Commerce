@@ -58,15 +58,26 @@ function App() {
       <Toaster
         toastOptions={{
           style: {
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))",
-            color: "#fff",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "16px",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
-            padding: "14px 18px",
+            background: "#ffffff",
+            color: "#1f2937", // Dark gray text (much better than pure black)
+            border: "1px solid #e5e7eb", // Subtle gray border
+            borderRadius: "12px",
+            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+            padding: "16px",
+            fontSize: "14px",
+            fontWeight: "500",
+          },
+          success: {
+            iconTheme: {
+              primary: "#4f46e5", // Indigo success icon to match your theme
+              secondary: "#fff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444", // Red error icon
+              secondary: "#fff",
+            },
           },
         }}
       />
