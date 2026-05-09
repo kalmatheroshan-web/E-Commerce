@@ -20,6 +20,7 @@ export function login(email, password, navigate) {
             }
         } catch (error) {
             console.log("error while login", error.message);
+            toast.error(error?.response.data.mes);
             console.error(error?.response.data.mes);
         } finally {
             dispatch(setLoading(false));
@@ -36,7 +37,7 @@ export function verify_otp(email, otp, navigate) {
                 localStorage.setItem('user', JSON.stringify(response.user));
                 dispatch(setToken(response.token));
                 dispatch(setSignupData(response.user));
-
+                toast.success('Login Successful');
                 if (response.user.accountType == 'customer') {
                     dispatch(setRole('customer'));
                     navigate('/');

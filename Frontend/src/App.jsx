@@ -58,25 +58,33 @@ function App() {
       <Toaster
         toastOptions={{
           style: {
-            background: "#ffffff",
-            color: "#1f2937", // Dark gray text (much better than pure black)
-            border: "1px solid #e5e7eb", // Subtle gray border
-            borderRadius: "12px",
-            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-            padding: "16px",
+            // Glassmorphism Effect
+            background: "rgba(255, 255, 255, 0.45)", // Semi-transparent white
+            backdropFilter: "blur(10px)",            // The "Glass" blur
+            WebkitBackdropFilter: "blur(10px)",      // Safari support
+
+            // Contrast & Border
+            color: "#1f2937",
+            border: "1px solid rgba(255, 255, 255, 0.3)", // Light border for the glass edge
+            borderRadius: "16px",
+
+            // Shadow to lift it off the white background
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
+
+            padding: "16px 24px",
             fontSize: "14px",
-            fontWeight: "500",
+            fontWeight: "600",
           },
           success: {
             iconTheme: {
-              primary: "#4f46e5", // Indigo success icon to match your theme
-              secondary: "#fff",
+              primary: "#4f46e5",
+              secondary: "rgba(255, 255, 255, 0.8)",
             },
           },
           error: {
             iconTheme: {
-              primary: "#ef4444", // Red error icon
-              secondary: "#fff",
+              primary: "#ef4444",
+              secondary: "rgba(255, 255, 255, 0.8)",
             },
           },
         }}
