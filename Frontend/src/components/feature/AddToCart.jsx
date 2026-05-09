@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 export default function AddToCart() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    
 
     const [data, setData] = useState([]);
     const [coupons, setCoupons] = useState([]);

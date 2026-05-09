@@ -109,7 +109,7 @@ export default function Checkout() {
 
 
         const orderData = {
-            address: {
+            address: signupData.addresses || {
                 street: data.street,
                 city: data.city,
                 state: data.state,
@@ -232,31 +232,51 @@ export default function Checkout() {
                                     <MapPin className="w-5 h-5 text-indigo-600" />
                                     Shipping Address
                                 </h2>
-                                <div className="grid md:grid-cols-2 gap-5">
-                                    <div className="md:col-span-2 space-y-1.5">
-                                        <label className={STYLES.label}>Street Address</label>
-                                        <div className={STYLES.inputWrapper}>
-                                            <MapPin className={STYLES.inputIcon} />
-                                            <input {...register("street", { required: true })} className={STYLES.input} placeholder="House No, Building, Street Name" />
-                                        </div>
+                                <div className="mt-6 p-4 bg-gray-50 border border-gray-100 rounded-2xl flex items-start gap-3">
+                                    {/* Simple Location Icon */}
+                                    <div className="mt-1">
+                                        <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <label className={STYLES.label}>City</label>
-                                        <input {...register("city", { required: true })} className={STYLES.inputSmall} placeholder="Mumbai" />
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <label className={STYLES.label}>State</label>
-                                        <input {...register("state", { required: true })} className={STYLES.inputSmall} placeholder="Maharashtra" />
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <label className={STYLES.label}>Pincode</label>
-                                        <input {...register("pincode", { required: true })} className={STYLES.inputSmall} placeholder="400001" />
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <label className={STYLES.label}>Country</label>
-                                        <input {...register("country")} disabled className={`${STYLES.inputSmall} bg-slate-50 text-slate-500 cursor-not-allowed`} />
+
+                                    <div className="text-sm text-gray-600 leading-relaxed">
+                                        <p className="font-semibold text-gray-900 mb-0.5">Shipping Address</p>
+                                        <p>
+                                            {signupData.addresses[0]?.street}, {signupData.addresses[0]?.city}
+                                        </p>
+                                        <p>
+                                            {signupData.addresses[0]?.state}, {signupData.addresses[0]?.country} - {signupData.addresses[0]?.pincode}
+                                        </p>
                                     </div>
                                 </div>
+                                {
+                                    signupData.addresses.length == 0 && <div className="grid md:grid-cols-2 gap-5">
+                                        <div className="md:col-span-2 space-y-1.5">
+                                            <label className={STYLES.label}>Street Address</label>
+                                            <div className={STYLES.inputWrapper}>
+                                                <MapPin className={STYLES.inputIcon} />
+                                                <input {...register("street", { required: true })} className={STYLES.input} placeholder="House No, Building, Street Name" />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className={STYLES.label}>City</label>
+                                            <input {...register("city", { required: true })} className={STYLES.inputSmall} placeholder="Mumbai" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className={STYLES.label}>State</label>
+                                            <input {...register("state", { required: true })} className={STYLES.inputSmall} placeholder="Maharashtra" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className={STYLES.label}>Pincode</label>
+                                            <input {...register("pincode", { required: true })} className={STYLES.inputSmall} placeholder="400001" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className={STYLES.label}>Country</label>
+                                            <input {...register("country")} disabled className={`${STYLES.inputSmall} bg-slate-50 text-slate-500 cursor-not-allowed`} />
+                                        </div>
+                                    </div>}
                             </div>
                         </div>
 
@@ -361,7 +381,7 @@ export default function Checkout() {
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }
