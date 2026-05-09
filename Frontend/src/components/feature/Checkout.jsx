@@ -51,6 +51,8 @@ export default function Checkout() {
     const navigate = useNavigate();
 
     const { signupData } = useSelector((state) => state.auth);
+    console.log(signupData);
+
     const cartItems = signupData?.cart ?? [];
 
     const {
@@ -96,13 +98,15 @@ export default function Checkout() {
 
     const location = useLocation();
     const discountValue = location?.state?.discountValue || 0;
-    const totalAmount = Math.round((subtotal + shippingFee + 10) - (subtotal + shippingFee + 10)* discountValue/100);
+    const totalAmount = Math.round((subtotal + shippingFee + 10) - (subtotal + shippingFee + 10) * discountValue / 100);
 
     const onSubmit = async (data) => {
         if (cartItems.length === 0) {
             toast.error("Your cart is empty");
             return;
         }
+
+
 
         const orderData = {
             address: {
@@ -163,7 +167,6 @@ export default function Checkout() {
             toast.error(err?.message || "Checkout failed");
         }
     };
-
     return (
         <div className={STYLES.container}>
             {/* Simple Checkout Header */}
@@ -171,7 +174,7 @@ export default function Checkout() {
                 <div className={STYLES.headerContent}>
                     <div className="flex items-center gap-2">
                         <div className="w-10 h-10rounded-xl flex items-center justify-center text-indigo-600">
-                            <Lock size={20}  />
+                            <Lock size={20} />
                         </div>
                         <div>
                             <h1 className="font-bold text-xl tracking-tight">Checkout</h1>
@@ -272,8 +275,8 @@ export default function Checkout() {
                                         <label
                                             key={method.id}
                                             className={`relative p-5 border-2 rounded-2xl cursor-pointer transition-all flex flex-col gap-1 ${paymentMethod === method.id
-                                                    ? "border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-600/10"
-                                                    : "border-slate-100 hover:border-slate-200"
+                                                ? "border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-600/10"
+                                                : "border-slate-100 hover:border-slate-200"
                                                 }`}
                                         >
                                             <div className="flex justify-between items-start">
