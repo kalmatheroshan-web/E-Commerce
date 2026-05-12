@@ -135,7 +135,7 @@ export default function AddToCart() {
         }
     }
     console.log(data);
-    if (loading) {
+    if (loading || data.length == 0) {
         return (
             <Box
                 display="flex"
