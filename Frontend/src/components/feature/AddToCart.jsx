@@ -141,7 +141,7 @@ export default function AddToCart() {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="60vh" // Centers vertically within the main content area
+                minHeight="100vh" // Centers vertically within the main content area
                 width="100%"
             >
                 <CircularProgress
