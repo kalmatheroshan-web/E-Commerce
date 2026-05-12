@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Star, Heart } from "lucide-react";
 
 export default function SearchResult({ data }) {
-    console.log(data);
     return (
         <div className="min-h-screen py-4">
             <div className="max-w-[1200px] mx-auto bg-white shadow-sm">
