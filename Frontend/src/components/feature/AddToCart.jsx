@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     add_To_Cart,
     decreaseCartQuantity,
@@ -24,7 +24,8 @@ import { useForm } from "react-hook-form";
 export default function AddToCart() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+    const { loading, setLoading } = useSelector((state) => state.auth);
+
 
     const [data, setData] = useState([]);
     const [coupons, setCoupons] = useState([]);
@@ -38,6 +39,7 @@ export default function AddToCart() {
     } = useForm();
 
     useEffect(() => {
+        setLoading(true);
         const fetchCart = async () => {
             try {
                 let res = await dispatch(viewCart());
@@ -50,6 +52,7 @@ export default function AddToCart() {
             }
         };
         fetchCart();
+        setLoading(false);
     }, [dispatch]);
 
     // Price calculations
@@ -130,6 +133,9 @@ export default function AddToCart() {
         }
     }
     console.log(data);
+    if(loading){
+        return <div>Loading...</div>
+    }
 
     return (
         <div className="min-h-screen bg-[#F8FAFC] px-4">
