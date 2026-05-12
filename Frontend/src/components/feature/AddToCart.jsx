@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CircularProgress, Box } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import {
     add_To_Cart,
@@ -20,11 +21,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { viewCoupons } from "../../Services/Operation/categoryApi";
 import { useForm } from "react-hook-form";
+import { setLoading } from "../../Redux/slices/authSlice";
 
 export default function AddToCart() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loading, setLoading } = useSelector((state) => state.auth);
+    const { loading } = useSelector((state) => state.auth);
 
 
     const [data, setData] = useState([]);
@@ -39,7 +41,7 @@ export default function AddToCart() {
     } = useForm();
 
     useEffect(() => {
-        setLoading(true);
+        dispatch(setLoading(true));
         const fetchCart = async () => {
             try {
                 let res = await dispatch(viewCart());
@@ -52,7 +54,7 @@ export default function AddToCart() {
             }
         };
         fetchCart();
-        setLoading(false);
+        dispatch(setLoading(false));
     }, [dispatch]);
 
     // Price calculations
@@ -133,8 +135,22 @@ export default function AddToCart() {
         }
     }
     console.log(data);
-    if(loading){
-        return <div>Loading...</div>
+    if (loading) {
+        return (
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="60vh" // Centers vertically within the main content area
+                width="100%"
+            >
+                <CircularProgress
+                    size={50} // Adjust size as needed
+                    thickness={4} // Makes the ring slightly thicker for a premium feel
+                    sx={{ color: '#4f46e5' }} // Custom Indigo color (Tailwind indigo-600)
+                />
+            </Box>
+        );
     }
 
     return (
