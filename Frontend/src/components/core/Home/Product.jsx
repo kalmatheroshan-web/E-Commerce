@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllProducts } from "../../../Services/Operation/productApi";
 import Card from "../../../Templete/Card";
+import Skelton from "./skelton";
 
 function Product() {
     let [data, setData] = useState([]);
@@ -46,7 +47,15 @@ function Product() {
 
             {/* Unified Grid - Using the Card component for consistency */}
             <div className="mb-20">
-                <Card data={data} />
+                {data ?
+                    <Card data={data} /> :
+                    (
+                        <div className="group animate-pulse gap-4 p-3 rounded-xl hover:shadow-lg transition-all duration-300 grid grid-cols-5">
+                            {Array.from({ length: 10 }).map(ele => (
+                                <Skelton key={ele} />))
+                            }
+                        </div>
+                    )}
             </div>
 
             {/* Dynamic Earbuds Promo Banner */}
@@ -108,7 +117,16 @@ function Product() {
             </div>
 
             <div className="relative">
-                <Card data={electric} />
+                {
+                    electric ?
+                        <Card data={electric} /> :
+                        <div className="group animate-pulse gap-4 p-3 rounded-xl hover:shadow-lg transition-all duration-300 grid grid-cols-5">
+                            {
+                                Array.from({ length: window.innerWidth <= 768 ? 6 : 10 }).map(ele => (
+                                    <Skelton key={ele} />))
+                            }
+                        </div>
+                }
             </div>
 
             {/* shoes */}

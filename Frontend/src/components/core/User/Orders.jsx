@@ -37,7 +37,7 @@ export default function Orders() {
   if (trackOrder && activeOrder) return <TrackOrder order={activeOrder} setTrackOrder={setTrackOrder} />;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] p-4 md:p-8 lg:p-12 font-sans">
+    <div className="min-h-[80vh] bg-[#f8fafc] px-4  lg:px-12 font-sans">
       <div className="max-w-5xl mx-auto pt-6">
         {/* Search & Filter */}
         <div className="flex flex-col sm:flex-row gap-4 mb-10">
