@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllProducts } from "../../../Services/Operation/productApi";
 import Card from "../../../Templete/Card";
-import Skelton from "./skelton";
+import Skelton from "./Skelton";
 
 function Product() {
     let [data, setData] = useState([]);
