@@ -7,7 +7,7 @@ import Skelton from "./Skelton";
 function Product() {
     const [data, setData] = useState([]);
     const [electric, setElectric] = useState([]);
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function main() {
