@@ -37,7 +37,7 @@ const TrackOrder = React.memo(({ order, setTrackOrder }) => {
                     <div className="relative w-full max-w-2xl transform animate-in zoom-in-95 duration-200">
                         <CreateReview
                             productId={activeReviewId}
-                            productImage={products.find(p => p.product._id === activeReviewId)?.product.images[0]}
+                            productImage={products.find(p => p.product._id === activeReviewId)?.product?.images[0]}
                             setReview={() => setActiveReviewId(null)}
                         />
                     </div>
