@@ -136,8 +136,8 @@ const TrackOrder = React.memo(({ order, setTrackOrder }) => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="py-6 text-center text-sm text-slate-600">{item.quantity}</td>
-                                        <td className="py-6 text-right text-sm font-bold text-slate-900">₹{(item.product.price * item.quantity).toLocaleString('en-IN')}</td>
+                                        <td className="py-6 text-center text-sm text-slate-600">{item?.quantity}</td>
+                                        <td className="py-6 text-right text-sm font-bold text-slate-900">₹{(item?.product?.price * item.quantity).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
