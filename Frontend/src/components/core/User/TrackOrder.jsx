@@ -120,7 +120,7 @@ const TrackOrder = React.memo(({ order, setTrackOrder }) => {
                                     <tr key={index} className="group">
                                         <td className="py-6">
                                             <div className="flex items-center gap-4">
-                                                <img src={item.product.images[0]} alt="" className="h-14 w-14 rounded border border-slate-100 object-cover bg-slate-50" />
+                                                <img src={item?.product?.images[0]} alt="" className="h-14 w-14 rounded border border-slate-100 object-cover bg-slate-50" />
                                                 <div>
                                                     <p className="font-medium text-slate-900 leading-tight">{item.product.productName}</p>
                                                     <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-tight">SKU: {item.product._id?.slice(-8)}</p>
