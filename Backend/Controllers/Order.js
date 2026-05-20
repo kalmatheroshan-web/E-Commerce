@@ -127,8 +127,10 @@ function generateTimeBasedId() {
 async function updateStatus(req, res) {
     try {
         const { orderId, status } = req.body;
-
-        transactionId = generateTimeBasedId();
+        
+        let transactionId = "";
+        if (status == "Completed")
+            transactionId = generateTimeBasedId();
 
         const order = await orderModel.findByIdAndUpdate(orderId, { status, transactionId }, { new: true });
         if (!order) {
