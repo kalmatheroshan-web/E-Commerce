@@ -8,8 +8,8 @@ const { uploadToCloudinary } = require('../Services/uploadToCloudinary');
 async function createReview(req, res) {
     try {
         const user = req.userId;
-        const { review: message, rating, productId: product ,title} = req.body;
-        const images = req.files?.images;
+        const { review: message, rating, productId: product, title } = req.body;
+        const images = Array.isArray(req.files?.images) ? req.files?.images : [req.files?.images];
 
         if (!images) {
             return res.status(400).json({ mes: "Image not supported" });
@@ -61,7 +61,7 @@ async function createReview(req, res) {
             message,
             rating,
             images: uploadedImages,
-            user, product,title
+            user, product, title
         });
 
         return res.status(201).json({ success: true, review });
