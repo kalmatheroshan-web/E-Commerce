@@ -148,14 +148,14 @@ const TrackOrder = React.memo(({ order, setTrackOrder }) => {
                     <div className="md:hidden space-y-6">
                         {products.map((item, index) => (
                             <div key={index} className="flex gap-4 items-start pb-6 border-b border-slate-50 last:border-0">
-                                <img src={item.product.images[0]} alt="" className="h-20 w-20 rounded-lg border border-slate-100 object-cover bg-slate-50" />
+                                <img src={item.product?.images[0]} alt="" className="h-20 w-20 rounded-lg border border-slate-100 object-cover bg-slate-50" />
                                 <div className="flex-1 min-w-0">
-                                    <p className="font-bold text-slate-900 text-sm leading-snug truncate">{item.product.productName}</p>
+                                    <p className="font-bold text-slate-900 text-sm leading-snug truncate">{item.product?.productName}</p>
                                     <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-tight">Qty: {item.quantity} • SKU: {item.product._id?.slice(-6)}</p>
-                                    <p className="text-sm font-black text-indigo-600 mt-1">₹{(item.product.price * item.quantity).toLocaleString('en-IN')}</p>
+                                    <p className="text-sm font-black text-indigo-600 mt-1">₹{(item.product?.price * item.quantity).toLocaleString('en-IN')}</p>
                                     {isDelivered && (
                                         <button
-                                            onClick={() => setActiveReviewId(item.product._id)}
+                                            onClick={() => setActiveReviewId(item?.product?._id)}
                                             className="mt-3 w-full py-2 bg-slate-50 border border-slate-200 rounded text-indigo-600 text-[10px] font-bold uppercase tracking-tighter"
                                         >
                                             Write a Review
