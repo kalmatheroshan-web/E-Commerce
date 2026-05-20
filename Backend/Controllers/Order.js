@@ -46,7 +46,7 @@ async function placeOrder(req, res) {
     try {
         const user = req.userId;
         const orderData = req.body;
- 
+
         let products = orderData.items.map((item) => {
             return {
                 product: item.product._id,
@@ -116,11 +116,21 @@ async function viewOrders(req, res) {
     }
 }
 
+function generateTimeBasedId() {
+    const timestamp = Date.now().toString(36).toUpperCase(); // Base36 encoded time
+    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+
+    return `TXN-${timestamp}-${randomPart}`;
+}
+
+
 async function updateStatus(req, res) {
     try {
         const { orderId, status } = req.body;
 
-        const order = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
+        transactionId = generateTimeBasedId();
+
+        const order = await orderModel.findByIdAndUpdate(orderId, { status, transactionId }, { new: true });
         if (!order) {
             return res.status(404).send({
                 success: false,
