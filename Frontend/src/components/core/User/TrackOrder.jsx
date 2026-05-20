@@ -6,14 +6,16 @@ const TrackOrder = React.memo(({ order, setTrackOrder }) => {
 
     if (!order || !order._id) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 px-4 animate-in fade-in duration-700">
-                <div className="w-16 h-16 bg-slate-50 flex items-center justify-center rounded-full mb-4 border border-slate-200">
-                    <span className="text-2xl text-slate-400">×</span>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 animate-in fade-in duration-500">
+                <div className="w-12 h-12 bg-rose-50 text-rose-500 flex items-center justify-center rounded-full mb-4">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 text-center">Order Information Unavailable</h3>
-                <p className="text-slate-500 text-sm mt-1 max-w-xs text-center">We are unable to retrieve details for this reference number at this time.</p>
+                <h3 className="text-base font-semibold text-slate-900">Order details unavailable</h3>
+                <p className="text-slate-500 text-sm mt-1 max-w-xs text-center">We couldn't retrieve the tracking details for this reference number.</p>
                 <button
-                    className="mt-8 w-full max-w-xs px-6 py-2.5 border border-slate-300 text-slate-700 text-sm font-medium rounded hover:bg-slate-50 transition-colors cursor-pointer"
+                    className="mt-6 px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
                     onClick={() => setTrackOrder(false)}
                 >
                     Return to Orders
@@ -23,203 +25,232 @@ const TrackOrder = React.memo(({ order, setTrackOrder }) => {
     }
 
     const { _id, status, products = [], createdAt, totalAmount = 0 } = order;
+    
+    // Normalize status for comparisons
+    const currentStatus = status?.toLowerCase() || 'pending';
     const statuses = ["pending", "shipped", "delivered"];
-    const currentStep = statuses.indexOf(status?.toLowerCase());
-    const isDelivered = status?.toLowerCase() === "delivered";
+    const currentStep = statuses.indexOf(currentStatus);
+    const isDelivered = currentStatus === "delivered";
+
+    // Status map for badges and labels
+    const statusConfig = {
+        pending: { label: 'Order Placed', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+        shipped: { label: 'In Transit', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+        delivered: { label: 'Delivered', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
+    };
 
     return (
-        <div className="relative py-6 md:py-12 px-4 md:px-6 max-w-5xl mx-auto font-sans antialiased">
-            
-            {/* Review Modal Portal */}
-            {activeReviewId && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setActiveReviewId(null)} />
-                    <div className="relative w-full max-w-2xl transform animate-in zoom-in-95 duration-200">
-                        <CreateReview
-                            productId={activeReviewId}
-                            productImage={products.find(p => p?.product?._id === activeReviewId)?.product?.images?.[0]}
-                            setReview={() => setActiveReviewId(null)}
-                        />
+        <div className="min-h-screen bg-slate-50/50 py-6 md:py-12 antialiased font-sans">
+            <div className="max-w-6xl mx-auto px-4 md:px-6">
+                
+                {/* Review Modal Portal */}
+                {activeReviewId && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setActiveReviewId(null)} />
+                        <div className="relative w-full max-w-xl transform animate-in zoom-in-95 duration-200">
+                            <CreateReview
+                                productId={activeReviewId}
+                                productImage={products.find(p => p?.product?._id === activeReviewId)?.product?.images?.[0]}
+                                setReview={() => setActiveReviewId(null)}
+                            />
+                        </div>
                     </div>
+                )}
+
+                {/* Top Action / Breadcrumb */}
+                <div className="flex items-center justify-between mb-6">
+                    <button 
+                        onClick={() => setTrackOrder(false)} 
+                        className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors cursor-pointer group"
+                    >
+                        <svg className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to Orders
+                    </button>
+                    <span className="text-xs font-mono bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        #{_id ? _id.slice(-8).toUpperCase() : ''}
+                    </span>
                 </div>
-            )}
 
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 mb-6 md:mb-8 text-[11px] md:text-xs font-semibold tracking-wide text-slate-400 uppercase">
-                <button onClick={() => setTrackOrder(false)} className="hover:text-slate-900 cursor-pointer transition-colors">Orders</button>
-                <span>/</span>
-                <span className="text-slate-900 truncate">Track #{_id ? _id.slice(-8).toUpperCase() : ''}</span>
-            </nav>
-
-            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                {/* Header */}
-                <header className="p-5 md:p-8 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div className="space-y-1">
-                        <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">Order Details</h1>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs md:text-sm text-slate-500">
-                            <span>ID: <span className="font-mono text-slate-700 uppercase">{_id ? _id.slice(-12) : ''}</span></span>
-                            {createdAt && (
-                                <>
-                                    <span className="hidden sm:block h-3 w-[1px] bg-slate-200"></span>
-                                    <span>Placed {new Date(createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex flex-col sm:items-end w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-0 border-slate-100">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Value</span>
-                        <span className="text-xl md:text-2xl font-black text-indigo-600">₹{totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-                    </div>
-                </header>
-
-                {/* Logistics Status Board - Responsive Layout */}
-                <section className="bg-slate-50/50 p-6 md:p-10 border-b border-slate-100">
-                    <div className="max-w-3xl mx-auto">
-                        
-                        {/* Desktop: Horizontal Stepper Layout */}
-                        <div className="hidden md:flex relative justify-between">
-                            {/* Connector Line */}
-                            <div className="absolute top-4 left-0 w-full h-[2px] bg-slate-200" aria-hidden="true">
-                                <div
-                                    className="h-full bg-green-500 transition-all duration-1000 ease-in-out"
-                                    style={{ width: `${currentStep >= 0 ? (currentStep / (statuses.length - 1)) * 100 : 0}%` }}
-                                />
-                            </div>
-
-                            {statuses.map((step, idx) => (
-                                <div key={step} className="relative flex flex-col items-center z-10">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-white ${idx <= currentStep
-                                        ? 'border-green-500 text-green-600 shadow-sm'
-                                        : 'border-slate-200 text-slate-300'
-                                        }`}>
-                                        {idx <= currentStep ? (
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                                        ) : (
-                                            <span className="text-xs font-bold">{idx + 1}</span>
-                                        )}
-                                    </div>
-                                    <span className={`mt-3 text-xs font-bold uppercase tracking-widest ${idx <= currentStep ? 'text-slate-900' : 'text-slate-400'}`}>
-                                        {step}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Mobile: Vertical Timeline Layout */}
-                        <div className="md:hidden space-y-6 relative pl-4">
-                            {/* Vertical Line */}
-                            <div className="absolute top-2 bottom-2 left-[27px] w-[2px] bg-slate-200" aria-hidden="true">
-                                <div 
-                                    className="w-full bg-green-500 transition-all duration-1000 ease-in-out origin-top"
-                                    style={{ height: `${currentStep >= 0 ? (currentStep / (statuses.length - 1)) * 100 : 0}%` }}
-                                />
-                            </div>
-
-                            {statuses.map((step, idx) => (
-                                <div key={step} className="flex items-center gap-4 relative z-10">
-                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-white shrink-0 ${idx <= currentStep
-                                        ? 'border-green-500 text-green-600 shadow-sm'
-                                        : 'border-slate-200 text-slate-300'
-                                        }`}>
-                                        {idx <= currentStep ? (
-                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                                        ) : (
-                                            <span className="text-[11px] font-bold">{idx + 1}</span>
-                                        )}
-                                    </div>
-                                    <span className={`text-xs font-bold uppercase tracking-wider ${idx <= currentStep ? 'text-slate-900' : 'text-slate-400'}`}>
-                                        {step}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-
-                    </div>
-                </section>
-
-                {/* Shipment Summary */}
-                <section className="p-5 md:p-8">
-                    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 md:mb-6">Shipment Summary</h3>
+                {/* Main Split Interface */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                     
-                    {/* Desktop View Table */}
-                    <div className="hidden md:block overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="border-b border-slate-100">
-                                    <th className="pb-4 font-semibold text-xs text-slate-400 uppercase tracking-wider">Product</th>
-                                    <th className="pb-4 font-semibold text-xs text-slate-400 uppercase tracking-wider text-center">Quantity</th>
-                                    <th className="pb-4 font-semibold text-xs text-slate-400 uppercase tracking-wider text-right">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-50">
-                                {products.map((item, index) => (
-                                    <tr key={index} className="group">
-                                        <td className="py-5">
-                                            <div className="flex items-center gap-4">
-                                                <img src={item?.product?.images?.[0]} alt="" className="h-14 w-14 rounded border border-slate-100 object-cover bg-slate-50 shrink-0" />
-                                                <div>
-                                                    <p className="font-medium text-slate-900 leading-tight">{item?.product?.productName}</p>
-                                                    <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-tight">SKU: {item?.product?._id ? item.product._id.slice(-8) : 'N/A'}</p>
-                                                    {isDelivered && item?.product?._id && (
-                                                        <button
-                                                            onClick={() => setActiveReviewId(item.product._id)}
-                                                            className="text-indigo-600 text-[10px] font-bold uppercase mt-2 flex items-center gap-1 hover:text-indigo-800 transition-colors cursor-pointer"
-                                                        >
-                                                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                                                            Write Review
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="py-5 text-center text-sm text-slate-600">{item?.quantity || 0}</td>
-                                        <td className="py-5 text-right text-sm font-bold text-slate-900">
-                                            {item?.product?.price && item?.quantity 
-                                                ? `₹${(item.product.price * item.quantity).toLocaleString('en-IN')}` 
-                                                : '₹0'}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* Mobile View List */}
-                    <div className="md:hidden space-y-5 divide-y divide-slate-100">
-                        {products.map((item, index) => (
-                            <div key={index} className={`flex gap-4 items-start ${index > 0 ? 'pt-5' : ''}`}>
-                                <img src={item?.product?.images?.[0]} alt="" className="h-16 w-16 rounded-lg border border-slate-100 object-cover bg-slate-50 shrink-0" />
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-semibold text-slate-900 text-sm leading-snug truncate">{item?.product?.productName}</p>
-                                    <p className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-tight">
-                                        Qty: {item?.quantity || 0} • SKU: {item?.product?._id ? item.product._id.slice(-6) : 'N/A'}
+                    {/* Left Column: Logistics Tracker & Core Info */}
+                    <div className="lg:col-span-2 space-y-6">
+                        
+                        {/* Status Card Header */}
+                        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <span className={`inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full border ${statusConfig[currentStatus]?.color || 'bg-slate-100'}`}>
+                                        {statusConfig[currentStatus]?.label || currentStatus}
+                                    </span>
+                                    <h1 className="text-xl font-bold text-slate-900 mt-2 tracking-tight">
+                                        {isDelivered ? 'Your package has arrived!' : 'Your delivery is on its way'}
+                                    </h1>
+                                    <p className="text-slate-500 text-xs md:text-sm mt-1">
+                                        {isDelivered ? 'Delivered on: ' : 'Estimated arrival: '}
+                                        <span className="font-semibold text-slate-800">Wednesday, 29 April</span>
                                     </p>
-                                    <p className="text-sm font-bold text-indigo-600 mt-1">
-                                        {item?.product?.price && item?.quantity 
-                                            ? `₹${(item.product.price * item.quantity).toLocaleString('en-IN')}` 
-                                            : '₹0'}
+                                </div>
+                                <div className="text-xs sm:text-right text-slate-400 border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100">
+                                    <p>Placed via Web</p>
+                                    <p className="font-medium text-slate-600 mt-0.5">
+                                        {createdAt ? new Date(createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
                                     </p>
-                                    {isDelivered && item?.product?._id && (
-                                        <button
-                                            onClick={() => setActiveReviewId(item.product._id)}
-                                            className="mt-3 w-full py-2 bg-slate-50 hover:bg-slate-100 transition-colors border border-slate-200 rounded text-indigo-600 text-[10px] font-bold uppercase tracking-wider cursor-pointer"
-                                        >
-                                            Write a Review
-                                        </button>
-                                    )}
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </section>
 
-                {/* Footer */}
-                <footer className="px-5 md:px-8 py-4 bg-slate-50 border-t border-slate-100">
-                    <p className="text-xs text-slate-500 text-center sm:text-left">
-                        {isDelivered ? 'Delivered on: ' : 'Estimated Delivery: '}
-                        <span className="font-bold text-slate-800 underline decoration-indigo-200 underline-offset-4">Wednesday, 29 April</span>
-                    </p>
-                </footer>
+                            {/* Divider */}
+                            <div className="h-[1px] bg-slate-100 my-8" />
+
+                            {/* Desktop: Horizontal Flow Stepper */}
+                            <div className="hidden md:flex relative justify-between max-w-xl mx-auto px-4">
+                                <div className="absolute top-3.5 left-6 right-6 h-[2px] bg-slate-100" aria-hidden="true">
+                                    <div
+                                        className="h-full bg-indigo-600 transition-all duration-1000 ease-in-out origin-left"
+                                        style={{ width: `${currentStep >= 0 ? (currentStep / (statuses.length - 1)) * 100 : 0}%` }}
+                                    />
+                                </div>
+
+                                {statuses.map((step, idx) => {
+                                    const isPassed = idx <= currentStep;
+                                    const isCurrent = idx === currentStep;
+                                    return (
+                                        <div key={step} className="relative flex flex-col items-center z-10">
+                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
+                                                isPassed 
+                                                    ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm shadow-indigo-100' 
+                                                    : 'bg-white border-slate-200 text-slate-400'
+                                            }`}>
+                                                {isPassed ? (
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                ) : (
+                                                    <span className="text-xs font-semibold">{idx + 1}</span>
+                                                )}
+                                            </div>
+                                            <span className={`mt-3 text-xs font-semibold capitalize ${isCurrent ? 'text-slate-900 font-bold' : isPassed ? 'text-slate-600' : 'text-slate-400'}`}>
+                                                {step}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Mobile: Vertical Flow Timeline */}
+                            <div className="md:hidden space-y-8 relative pl-6 max-w-sm mx-auto py-2">
+                                <div className="absolute top-2 bottom-2 left-[31px] w-[2px] bg-slate-100" aria-hidden="true">
+                                    <div 
+                                        className="w-full bg-indigo-600 transition-all duration-1000 ease-in-out origin-top"
+                                        style={{ height: `${currentStep >= 0 ? (currentStep / (statuses.length - 1)) * 100 : 0}%` }}
+                                    />
+                                </div>
+
+                                {statuses.map((step, idx) => {
+                                    const isPassed = idx <= currentStep;
+                                    const isCurrent = idx === currentStep;
+                                    return (
+                                        <div key={step} className="flex items-start gap-4 relative z-10">
+                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-500 shrink-0 ${
+                                                isPassed 
+                                                    ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' 
+                                                    : 'bg-white border-slate-200 text-slate-400'
+                                            }`}>
+                                                {isPassed ? (
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                ) : (
+                                                    <span className="text-[10px] font-bold">{idx + 1}</span>
+                                                )}
+                                            </div>
+                                            <div className="-mt-0.5">
+                                                <p className={`text-sm font-semibold capitalize ${isCurrent ? 'text-slate-900 font-bold' : isPassed ? 'text-slate-700' : 'text-slate-400'}`}>
+                                                    {step}
+                                                </p>
+                                                {isCurrent && (
+                                                    <p className="text-xs text-slate-400 mt-0.5">Active status process updates dynamically.</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {/* Right Column: Shipment Summary Sidebar */}
+                    <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm lg:sticky lg:top-6">
+                        <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Items in Order</h3>
+                            <span className="text-xs font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                                {products.length} {products.length === 1 ? 'item' : 'items'}
+                            </span>
+                        </div>
+
+                        {/* Product Rows */}
+                        <div className="divide-y divide-slate-100 max-h-[400px] overflow-y-auto pr-1">
+                            {products.map((item, index) => (
+                                <div key={index} className="flex gap-4 py-4 first:pt-0 last:pb-0">
+                                    <img 
+                                        src={item?.product?.images?.[0]} 
+                                        alt="" 
+                                        className="h-14 w-14 rounded-xl border border-slate-100 object-cover bg-slate-50 shrink-0" 
+                                    />
+                                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                                        <div>
+                                            <p className="font-semibold text-slate-900 text-sm leading-snug truncate">
+                                                {item?.product?.productName}
+                                            </p>
+                                            <p className="text-xs text-slate-400 mt-0.5">
+                                                Qty: <span className="text-slate-600 font-medium">{item?.quantity || 0}</span> • Price: ₹{item?.product?.price?.toLocaleString('en-IN')}
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="flex items-center justify-between gap-2 mt-2">
+                                            <span className="text-sm font-bold text-slate-900">
+                                                ₹{item?.product?.price && item?.quantity ? (item.product.price * item.quantity).toLocaleString('en-IN') : '0'}
+                                            </span>
+                                            
+                                            {isDelivered && item?.product?._id && (
+                                                <button
+                                                    onClick={() => setActiveReviewId(item.product._id)}
+                                                    className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50/50 hover:bg-indigo-50 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                                                >
+                                                    Write Review
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Order Total Footer Section inside Card */}
+                        <div className="mt-6 pt-4 border-t border-slate-100 space-y-2.5">
+                            <div className="flex justify-between text-xs text-slate-500">
+                                <span>Subtotal</span>
+                                <span className="font-medium text-slate-700">₹{totalAmount.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div className="flex justify-between text-xs text-slate-500">
+                                <span>Shipping</span>
+                                <span className="font-medium text-emerald-600">Free</span>
+                            </div>
+                            <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+                                <span className="text-sm font-semibold text-slate-900">Total Paid</span>
+                                <span className="text-lg font-black text-indigo-600">
+                                    ₹{totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
             </div>
         </div>
     );
