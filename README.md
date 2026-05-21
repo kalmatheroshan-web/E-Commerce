@@ -1,6 +1,6 @@
-# 🚀 Astra Marketplace - Modern E-Commerce Platform
+# 🚀 FikriShop - Modern E-Commerce Platform
 
-Astra Marketplace is a premium full-stack e-commerce application designed with a focus on seamless user experience, high-performance architecture, and a modern, minimalist interface. Built for scaling modern online studios and digital marketplaces, it features an interactive customer storefront alongside a comprehensive data-driven administrative dashboard.
+FikriShop is a premium full-stack e-commerce application designed with a focus on seamless user experience, high-performance architecture, and a modern, minimalist interface. Built for scaling modern online studios and digital marketplaces, it features an interactive customer storefront alongside a comprehensive data-driven administrative dashboard.
 
 ---
 
