@@ -14,7 +14,6 @@ import {
     ShoppingBag,
     ShieldCheck,
     ArrowLeft,
-    Tag,
     ChevronRight,
     Ticket
 } from "lucide-react";
@@ -27,7 +26,6 @@ export default function AddToCart() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading } = useSelector((state) => state.auth);
-
 
     const [data, setData] = useState([]);
     const [coupons, setCoupons] = useState([]);
@@ -51,10 +49,11 @@ export default function AddToCart() {
                 setCoupons(couponRes || []);
             } catch (error) {
                 console.error("Cart Fetch Error:", error);
+            } finally {
+                dispatch(setLoading(false));
             }
         };
         fetchCart();
-        dispatch(setLoading(false));
     }, [dispatch]);
 
     // Price calculations
@@ -122,7 +121,6 @@ export default function AddToCart() {
         }
     };
 
-
     function onSubmit(info) {
         const coupon = coupons.find(
             item => item.code === info.couponCode.trim()
@@ -134,40 +132,40 @@ export default function AddToCart() {
             setDiscountValue(0);
         }
     }
-    console.log(data);
+
     if (loading) {
         return (
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh" // Centers vertically within the main content area
+                minHeight="100vh"
                 width="100%"
             >
                 <CircularProgress
-                    size={50} // Adjust size as needed
-                    thickness={4} // Makes the ring slightly thicker for a premium feel
-                    sx={{ color: '#4f46e5' }} // Custom Indigo color (Tailwind indigo-600)
+                    size={50}
+                    thickness={4}
+                    sx={{ color: '#4f46e5' }}
                 />
             </Box>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] px-4">
+        <div className="min-h-screen bg-[#F8FAFC] px-4 py-6 md:py-12">
             <div className="max-w-6xl mx-auto">
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 md:mb-8 gap-4">
                     <div>
-                        <Link to="/" className="group flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors mb-2 text-sm font-medium">
+                        <Link to="/" className="group inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors mb-2 text-sm font-medium">
                             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                             Back to Gallery
                         </Link>
-                        <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+                        <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                             Shopping Cart <span className="text-indigo-600">.</span>
                         </h1>
                     </div>
-                    <div className="bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm self-start">
+                    <div className="bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm self-start sm:self-auto">
                         <p className="text-sm font-bold text-slate-600">
                             Total Items: <span className="text-indigo-600">{data.length}</span>
                         </p>
@@ -175,121 +173,135 @@ export default function AddToCart() {
                 </div>
 
                 {data.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200">
-                        <div className="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <ShoppingBag size={32} className="text-slate-300" />
+                    <div className="text-center py-16 md:py-20 bg-white rounded-2xl md:rounded-3xl border-2 border-dashed border-slate-200 px-4">
+                        <div className="bg-slate-50 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <ShoppingBag size={28} className="text-slate-300" />
                         </div>
-                        <h2 className="text-xl font-bold text-slate-800 mb-2">Your cart is feeling lonely</h2>
-                        <p className="text-slate-500 mb-8 max-w-xs mx-auto">Looks like you haven't added anything to your cart yet.</p>
-                        <Link to="/" className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all">
+                        <h2 className="text-lg sm:text-xl font-bold text-slate-800 mb-2">Your cart is feeling lonely</h2>
+                        <p className="text-slate-500 mb-6 sm:mb-8 max-w-xs mx-auto text-sm">Looks like you haven't added anything to your cart yet.</p>
+                        <Link to="/" className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 sm:px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all text-sm sm:text-base">
                             Start Shopping <ChevronRight size={18} />
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid lg:grid-cols-12 gap-8">
+                    <div className="grid lg:grid-cols-12 gap-6 md:gap-8 items-start">
                         {/* Cart Items List */}
                         <div className="lg:col-span-8 space-y-4">
                             {data.map(ele => (
                                 <div
-                                    key={ele}
-                                    className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-200 hover:shadow-lg transition-all duration-300 group"
+                                    key={`${ele.product?._id}-${ele.size}`}
+                                    className="flex flex-col sm:flex-row gap-4 p-4 bg-white rounded-2xl border border-slate-200 hover:shadow-md transition-all duration-300 group relative"
                                 >
-                                    {/* LEFT: Image + Quantity */}
-                                    <div className="flex flex-col items-center gap-3">
-                                        {/* Image */}
-                                        <div className="w-20 h-24 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+                                    {/* Layout Container for Image and Details */}
+                                    <div className="flex gap-4 flex-1">
+                                        {/* Image Section */}
+                                        <div className="w-20 h-24 sm:w-24 sm:h-28 bg-slate-100 rounded-xl overflow-hidden border border-slate-200 flex-shrink-0">
                                             <img
-                                                src={ele.product?.images[0]}
+                                                src={ele.product?.images?.[0]}
                                                 alt={ele.product?.productName}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition"
+                                                className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                                             />
                                         </div>
 
-                                        {/* Quantity */}
-                                        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2 py-1">
+                                        {/* Info Details Section */}
+                                        <div className="flex-1 flex flex-col justify-between min-w-0 py-0.5">
+                                            <div>
+                                                <h3 className="text-sm sm:text-base font-semibold text-slate-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition pr-6 sm:pr-0">
+                                                    {ele.product?.productName}
+                                                </h3>
+
+                                                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                                        Size
+                                                    </span>
+                                                    <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
+                                                        {ele.size}
+                                                    </span>
+
+                                                    {ele.product?.discount > 0 && (
+                                                        <>
+                                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
+                                                                Off
+                                                            </span>
+                                                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold">
+                                                                {ele.product.discount}%
+                                                            </span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Price Display for Desktop / Tablet view */}
+                                            <div className="hidden sm:block mt-2">
+                                                <div className="flex items-baseline gap-2">
+                                                    <span className="text-base font-bold text-slate-900">
+                                                        {new Intl.NumberFormat("en-IN", {
+                                                            style: "currency",
+                                                            currency: "INR",
+                                                            maximumFractionDigits: 0
+                                                        }).format(
+                                                            ele.product?.price -
+                                                            (ele.product?.price * ele.product?.discount) / 100
+                                                        )}
+                                                    </span>
+                                                    {ele.product?.discount > 0 && (
+                                                        <span className="text-xs text-slate-400 line-through">
+                                                            ₹{ele.product?.price}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Action bar (Quantity selectors and Actions layout) */}
+                                    <div className="flex sm:flex-col items-center sm:items-end justify-between border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 native-mobile-row">
+                                        {/* Quantity Controls */}
+                                        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-1">
                                             <button
-                                                onClick={() =>
-                                                    handleDecrease(ele.product._id, ele.size)
-                                                }
-                                                className="p-1 hover:bg-white rounded-md transition cursor-pointer"
+                                                onClick={() => handleDecrease(ele.product?._id, ele.size)}
+                                                className="p-1 hover:bg-white rounded-md transition touch-manipulation"
+                                                aria-label="Decrease quantity"
                                             >
                                                 <Minus size={14} className="text-slate-600" />
                                             </button>
 
-                                            <span className="px-3 text-sm font-semibold text-slate-800">
+                                            <span className="px-3 text-sm font-semibold text-slate-800 min-w-[24px] text-center">
                                                 {ele.quantity}
                                             </span>
 
                                             <button
-                                                onClick={() =>
-                                                    handleIncrease(ele.product._id, ele.size)
-                                                }
-                                                className="p-1 hover:bg-white rounded-md transition cursor-pointer"
+                                                onClick={() => handleIncrease(ele.product?._id, ele.size)}
+                                                className="p-1 hover:bg-white rounded-md transition touch-manipulation"
+                                                aria-label="Increase quantity"
                                             >
                                                 <Plus size={14} className="text-slate-600" />
                                             </button>
                                         </div>
-                                    </div>
 
-                                    {/* MIDDLE: Info */}
-                                    <div className="flex-1 flex flex-col justify-between py-1">
-                                        <div>
-                                            {/* Title */}
-                                            <h3 className="text-sm sm:text-base font-semibold text-slate-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition">
-                                                {ele.product?.productName}
-                                            </h3>
-
-                                            {/* Meta */}
-                                            <div className="flex items-center gap-2 mt-2 flex-wrap">
-                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                                                    Size
-                                                </span>
-                                                <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
-                                                    {ele.size}
-                                                </span>
-
-                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-2">
-                                                    Off
-                                                </span>
-                                                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold">
-                                                    {ele.product.discount}%
-                                                </span>
+                                        {/* Bottom Action wrapper for mobile */}
+                                        <div className="flex items-center gap-4 sm:mt-0">
+                                            {/* Price display fallback for mobile layout execution */}
+                                            <div className="text-right sm:hidden">
+                                                <p className="text-base font-bold text-slate-900">
+                                                    {new Intl.NumberFormat("en-IN", {
+                                                        style: "currency",
+                                                        currency: "INR",
+                                                        maximumFractionDigits: 0
+                                                    }).format(
+                                                        ele.product?.price -
+                                                        (ele.product?.price * ele.product?.discount) / 100
+                                                    )}
+                                                </p>
                                             </div>
-                                        </div>
 
-                                    </div>
-
-                                    {/* RIGHT: Price + Delete */}
-                                    <div className="flex flex-col items-end justify-between">
-                                        <button
-                                            onClick={() =>
-                                                handleDelete(
-                                                    ele.product._id,
-                                                    ele.size,
-                                                    ele.quantity
-                                                )
-                                            }
-                                            className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-
-                                        <div className="text-right">
-                                            <p className="text-lg font-bold text-slate-900">
-                                                {new Intl.NumberFormat("en-IN", {
-                                                    style: "currency",
-                                                    currency: "INR",
-                                                    maximumFractionDigits: 0
-                                                }).format(
-                                                    ele.product.price -
-                                                    (ele.product.price * ele.product.discount) / 100
-                                                )}
-                                            </p>
-
-                                            {/* Optional original price */}
-                                            <p className="text-xs text-slate-400 line-through">
-                                                ₹{ele.product.price}
-                                            </p>
+                                            <button
+                                                onClick={() => handleDelete(ele.product?._id, ele.size, ele.quantity)}
+                                                className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition absolute top-3 right-3 sm:relative sm:top-0 sm:right-0"
+                                                aria-label="Delete item"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -297,44 +309,44 @@ export default function AddToCart() {
                         </div>
 
                         {/* Order Summary Sidebar */}
-                        <div className="lg:col-span-4">
-                            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm sticky top-24">
-                                <h2 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
+                        <div className="lg:col-span-4 lg:sticky lg:top-24">
+                            <div className="bg-white p-6 sm:p-8 rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm">
+                                <h2 className="text-lg sm:text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
                                     Summary <ShieldCheck size={20} className="text-emerald-500" />
                                 </h2>
 
-                                <div className="space-y-4 mb-8">
-                                    <div className="flex justify-between text-slate-500 font-medium">
+                                <div className="space-y-4 mb-6 md:mb-8">
+                                    <div className="flex justify-between text-sm sm:text-base text-slate-500 font-medium">
                                         <span>Subtotal</span>
                                         <span className="text-slate-900">₹{subtotal.toFixed(2)}</span>
                                     </div>
-                                    <div className="flex justify-between text-slate-500 font-medium">
+                                    <div className="flex justify-between text-sm sm:text-base text-slate-500 font-medium">
                                         <span>Platform Fee</span>
                                         <span className="text-slate-900">₹{platformFee}</span>
                                     </div>
                                     {discountValue > 0 && (
-                                        <div className="flex justify-between text-emerald-600 font-bold bg-emerald-50 p-2 rounded-lg">
+                                        <div className="flex justify-between text-sm sm:text-base text-emerald-600 font-bold bg-emerald-50 p-2 rounded-lg">
                                             <span>Discount</span>
                                             <span>-{discountValue}%</span>
                                         </div>
                                     )}
                                     <div className="h-px bg-slate-100 my-4" />
                                     <div className="flex justify-between items-center">
-                                        <span className="text-lg font-bold text-slate-900">Total Amount</span>
-                                        <span className="text-2xl font-black text-indigo-600">₹{total}</span>
+                                        <span className="text-base sm:text-lg font-bold text-slate-900">Total Amount</span>
+                                        <span className="text-xl sm:text-2xl font-black text-indigo-600">₹{total}</span>
                                     </div>
                                 </div>
 
                                 {/* Coupon Box */}
                                 <div className="mb-6">
-                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 block">Promo Code</label>
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Promo Code</label>
                                     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 p-1.5 bg-slate-50 border border-slate-200 rounded-xl focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                                         <input
                                             {...register("couponCode")}
                                             placeholder="Enter code..."
-                                            className="bg-transparent border-none focus:ring-0 px-3 flex-1 text-sm font-bold text-slate-700 placeholder:text-slate-400"
+                                            className="bg-transparent border-none focus:ring-0 px-2 flex-1 text-sm font-bold text-slate-700 placeholder:text-slate-400 w-full min-w-0"
                                         />
-                                        <button type="submit" className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">
+                                        <button type="submit" className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors flex-shrink-0">
                                             Apply
                                         </button>
                                     </form>
@@ -347,10 +359,10 @@ export default function AddToCart() {
                                     </button>
 
                                     {seeCoupon && (
-                                        <div className="mt-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                                        <div className="mt-3 space-y-2 max-h-48 overflow-y-auto pr-1 transition-all duration-300">
                                             {coupons.map((ele, i) => (
                                                 <div
-                                                    key={i}
+                                                    key={ele.code || i}
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(ele.code);
                                                         setValue("couponCode", ele.code);
@@ -358,7 +370,7 @@ export default function AddToCart() {
                                                     className="flex justify-between items-center p-3 border border-dashed border-indigo-200 bg-indigo-50/30 rounded-xl cursor-pointer hover:bg-indigo-50 transition-colors group"
                                                 >
                                                     <span className="text-sm font-black text-slate-700">{ele.code}</span>
-                                                    <span className="text-xs font-bold text-indigo-600 bg-white px-2 py-1 rounded-md shadow-sm group-hover:scale-110 transition-transform">Copy</span>
+                                                    <span className="text-xs font-bold text-indigo-600 bg-white px-2 py-1 rounded-md shadow-sm group-hover:scale-105 transition-transform">Copy</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -367,21 +379,20 @@ export default function AddToCart() {
 
                                 <button
                                     onClick={() => navigate("/checkout", { state: { discountValue } })}
-                                    className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                                    className="w-full bg-indigo-600 text-white py-3.5 sm:py-4 rounded-2xl font-black text-base sm:text-lg shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3 touch-manipulation"
                                 >
                                     Proceed to Checkout
                                     <ChevronRight size={20} />
                                 </button>
 
-                                <p className="text-[10px] text-center text-slate-400 mt-6 font-medium uppercase tracking-wider">
+                                <p className="text-[10px] text-center text-slate-400 mt-5 font-medium uppercase tracking-wider">
                                     Secure SSL encrypted checkout
                                 </p>
                             </div>
                         </div>
                     </div >
-                )
-                }
+                )}
             </div >
-        </div >
+        </div>
     );
 }
