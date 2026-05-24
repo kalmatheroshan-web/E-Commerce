@@ -9,7 +9,7 @@ async function createReview(req, res) {
     try {
         const user = req.userId;
         const { review: message, rating, productId: product, title } = req.body;
-        const images = Array.isArray(req.files?.images) ? req.files?.images : [req.files?.images];
+        const images = [...req.files?.images];
 
         if (!images) {
             return res.status(400).json({ mes: "Image not supported" });
