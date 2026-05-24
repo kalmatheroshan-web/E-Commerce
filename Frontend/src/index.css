@@ -18,30 +18,53 @@
 }
 
 
-
+/* Swiper Container */
 .swiper {
-    padding-bottom: 25px !important;
+    padding-bottom: 28px !important;
 }
 
+/* Default Pagination Bullets */
 .swiper .swiper-pagination-bullet {
-    width: 7px;
-    height: 7px;
-    background: #dbdbdb;
+    width: 8px;
+    height: 6px;
+    background: #c7d2fe; /* indigo-200 */
     opacity: 1;
-    margin: 0 4px;
-    border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0 5px !important;
+    border-radius: 999px;
+    transition: all 0.35s ease;
+    cursor: pointer;
 }
 
-/* Active Bullet (The Flipkart Blue Pill) */
+/* Active Bullet — Flipkart Style Indigo Pill */
 .swiper .swiper-pagination-bullet-active {
-    width: 20px;
-    border-radius: 10px;
-    background: #2874f0;
+    width: 40px;
+    height: 6px;
+    border-radius: 999px;
+    background: #4f46e5; /* indigo-600 */
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+    animation: swiperbar 3s linear infinite;
 }
 
-/* Optional: Hover effect for better UX on desktop */
+/* Smooth Growing Animation */
+@keyframes swiperbar {
+    0% {
+        width: 12px;
+        opacity: 0.7;
+    }
+
+    50% {
+        width: 40px;
+        opacity: 1;
+    }
+
+    100% {
+        width: 40px;
+        opacity: 1;
+    }
+}
+
+/* Desktop Hover */
 .swiper .swiper-pagination-bullet:hover {
-    background: #2874f0;
-    opacity: 0.7;
+    background: #6366f1; /* indigo-500 */
+    transform: scale(1.08);
 }
